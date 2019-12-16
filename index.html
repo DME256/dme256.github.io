@@ -32,7 +32,7 @@
     }
 
     h1 {
-      display: inline-block;
+      /* display: inline-block;
       color: rgba(255, 200, 0, 0.8);
       letter-spacing: 0.05em;
       margin-top: 0px;
@@ -42,7 +42,14 @@
       width: 380px;
       padding: 10px;
       margin: 0;
-      color: rgb(8, 8, 8);
+      color: rgb(8, 8, 8); */
+
+      position: center;
+      top: 0px;
+      left: 10px;
+      color: #001323;	  
+      z-index: 9999;
+      
 
     }
 
@@ -128,7 +135,7 @@
       border: 2px solid rgba(244, 244, 244, 0.2);
       background: rgba(100, 100, 100, 0.9);
       color: rgba(244, 244, 244, 0.8);
-      border-radius: 5px;
+      border-radius: 15px;
     }
 
     .legend h3 {
@@ -195,6 +202,9 @@
       border-right: 15px solid transparent;
       border-top: 15px solid #2c70b4;
     }
+
+   
+
   </style>
 </head>
 
@@ -203,7 +213,7 @@
     <h1>KY Auto Accident Trends </h1>
     <h2></h2>
   </header>
-  <div class='custom-popup' id='map'></div>
+  <div id='map'></div>
   <button id="info-button" onclick="myInfo()">Information</button>
   <div id='footer'>
 
@@ -288,11 +298,22 @@
           // console.log(layer);
           layer.setStyle({});
 
-          layer.bindPopup("<h3>" + props["NAME"] + " County</h3>" +
+          var toolTipInfo = "<h3>" + props["NAME"] + " County</h3>" +
             " +/- in Accidents " + (props["PERCENT_CHANGE"]).toLocaleString() + "% </b><br>" +
             " 2007 Accidents: " + props[attributeValue].toLocaleString() + "</b><br>" +
             " 2017 Accidents: " + props[normValue].toLocaleString() + "</b><br>" +
-            " Population: " + props["POPULATION"].toLocaleString());
+            " Population: " + props["POPULATION"].toLocaleString()
+                        if (L.Browser.mobile) {
+                      // if true use popup
+                      layer.bindPopup(toolTipInfo);
+                    } 
+                    else {
+                      // if false use tooltip
+                      layer.bindTooltip(toolTipInfo, {
+                      sticky: true
+                      });
+                    };
+                        
 
         });
 
@@ -308,8 +329,10 @@
           // loop through all the counties
           dataLayer.eachLayer(function (layer) {
             var props = layer.feature.properties
+            if (props[normValue] / props[attributeValue] != null) {
             var value = props[normValue] / props[attributeValue];
             values.push(value);
+            }
           });
           console.log(values);
 
@@ -382,8 +405,8 @@
             // of that class and include a label with the low and a high ends of that class range
             div.innerHTML +=
               '<span style="background:' + color + '"></span> ' +
-              '<label>' + ((breaks[i][0] * 100) - 100).toLocaleString() + ' &mdash; ' +
-              ((breaks[i][1] * 100) - 100).toLocaleString() + '</label>';
+              '<label>' + ((breaks[i][0] * 100) - 100).toFixed(1) + ' &mdash; ' +
+              ((breaks[i][1] * 100) - 100).toFixed(1) + '%</label>';
           }
 
           // return the populated div to be added to the map
