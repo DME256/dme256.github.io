@@ -47,10 +47,10 @@
       position: center;
       top: 0px;
       left: 10px;
-      color: #001323;	  
+      font-weight: bolder;
+      color: #001323;
       z-index: 9999;
       
-
     }
 
     h2 {
@@ -88,8 +88,8 @@
       z-index: 9000;
       position: absolute;
       /* 
-    Hide the footer be default. This should not contain too much information. Like to a new page for extended content.
-    */
+      Hide the footer be default. This should not contain too much information. Like to a new page for extended content.
+      */
       bottom: -10px;
       /* If too much is included, enable scroll */
       overflow: scroll;
@@ -179,8 +179,7 @@
       color: #001323;
     }
 
-    
-    /* added color to popup
+        /* added color to popup
     .custom-popup .leaflet-popup-content-wrapper {
       background: #2c3e50;
       color: #fff;
@@ -203,9 +202,7 @@
       border-right: 15px solid transparent;
       border-top: 15px solid #2c70b4;
     } */
-
    
-
   </style>
 </head>
 
@@ -243,12 +240,10 @@
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
   <script src="https://unpkg.com/simple-statistics@6.1.1/dist/simple-statistics.min.js"></script>
-
-
+  
   <script>
     // WRITE YOUR SWEET CODE HERE
     //I appreciate the tuiton reibursment from my company- Inurance company- they will love this map!
-
 
     var options = {
       center: [37.8, -85.8],
@@ -260,7 +255,6 @@
     var attributeValue = "ACC2007",
       normValue = "ACC2017",
       amtchange = "PERCEN_CHANGE";
-
 
     var countyLayer = $.getJSON("data/accdata.json", function (data) {
 
@@ -287,7 +281,6 @@
 
       dataLayer.addTo(map)
 
-
       drawMap(dataLayer);
 
       // call to new function here gets the data out of the
@@ -313,13 +306,9 @@
                       sticky: true
                       });
                     };
-                        
-
         });
 
         drawLegend(breaks);
-
-
 
         function getClassBreaks() {
 
@@ -344,9 +333,7 @@
           });
           return breaks;
         }
-
         // var breaks = getClassBreaks(dataLayer);
-
         dataLayer.eachLayer(function (layer) {
           var props = layer.feature.properties
           layer.setStyle({
@@ -354,7 +341,7 @@
           });
 
 
-        });
+         });
 
       };
 
@@ -369,9 +356,9 @@
         } else if (d <= breaks[3][1]) {
           return '#FFD271'
         } else if (d <= breaks[4][1]) {
-          return '#F65C78'
+          return '#FA8334'
         } else if (d <= breaks[5][1]) {
-          return '#F14517'
+          return '#BA2632'
         } else if (d <= breaks[6][1]) {
           return '#F11717'
         }
