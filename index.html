@@ -15,7 +15,7 @@
       background: rgb(43, 43, 43);
       background-image: url("images/Texting-While-Driving-2000x1333.gif");
       background-repeat: no-repeat;
-      background-position: left bottom;
+      background-position: center;
       background-attachment: scroll;
       background-size: 100% 100%;
       /* background: rgb(177, 172, 172); */
@@ -327,7 +327,7 @@
           });
           console.log(values);
 
-          var clusters = ss.ckmeans(values, 7);
+          var clusters = ss.ckmeans(values, 9);
 
           // create an array of the lowest value within each cluster
           var breaks = clusters.map(function (cluster) {
@@ -348,20 +348,24 @@
       };
       
       function getColor(d, breaks) {
-
+       
         if (d <= breaks[0][1]) {
-          return '#74a9cf';
+          return '#33658A';
         } else if (d <= breaks[1][1]) {
-          return '#bdc9e1';
+          return '#74a9cf';
         } else if (d <= breaks[2][1]) {
-          return '#E8E8E4';
+          return '#bdc9e1';
         } else if (d <= breaks[3][1]) {
-          return '#FFD271'
+          return '#E8E8E4'
         } else if (d <= breaks[4][1]) {
-          return '#FA8334'
+          return '#FFD271'
         } else if (d <= breaks[5][1]) {
-          return '#E93C04'
+          return '#FA8334'
         } else if (d <= breaks[6][1]) {
+          return '#E93C04'
+        } else if (d <= breaks[7][1]) {
+          return '#F11717'
+        } else if (d <= breaks[8][1]) {
           return '#F11717'
         }
       } // end getColor
