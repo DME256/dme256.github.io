@@ -1,5 +1,8 @@
 # Kentucky Auto Accident Trends from 2007-2017
 
-In 2007 the Apple iPhone was introduced, and smart phone use has continued to increased. In the media there a consistent message that texting and driving and use of phones is a issue. For most people that drive(and do not use smart phone) you may agree that there seems to be an issue with smart phones (iPhones, Android, Blackberry(not so much anymore).The data was collected from KY State Police total accident report by county, to analyze if there has been an increase in auto accidents in Kentucky counties since the introduction of smart phones. 
+Map displays the percentage of change in accidents in the Commonwealth of Kentucky from 2007-2017.</p>
 
-The data was pulled from KY State Police accident reports for 2007(year of the iPhone introduction) to 2017. In looking at data, population seemed an important component. There are some outlying counties on both reduction/increase in accidents but they havea relatively small population compared to the larger urban areas of KY.
+In 2007 the Apple iPhone was introduced, and since then smart phone use has continued to increased. The data
+was collected to analyze if there has been any impact on the total number of auto accidents in Kentucky counties since the introduction of smart phones devices. Over the ten year period the US Census estimated Population growth in the Commonwealth of Kentucky was approx. 3 percent, while the accident rate increased by 10 percent. 
+    
+Data was obtained from the 2008 and 2018 Kentucky State Police Traffic Collision Reports. Total collisions for year ending 2007 and 2017 where used. Population data is based on 2010 US Census Data and growth estimates are from US Census website. 
