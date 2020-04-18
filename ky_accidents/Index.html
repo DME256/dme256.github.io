@@ -2,7 +2,7 @@
 
 <head>
   <meta charset=utf-8 />
-  <title>KY Accident Trends</title>
+  <title>Lesson 09 Starter</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
@@ -32,7 +32,7 @@
     }
 
     h1 {
-      /* display: inline-block;
+      display: inline-block;
       color: rgba(255, 200, 0, 0.8);
       letter-spacing: 0.05em;
       margin-top: 0px;
@@ -42,15 +42,8 @@
       width: 380px;
       padding: 10px;
       margin: 0;
-      color: rgb(8, 8, 8); */
+      color: rgb(8, 8, 8);
 
-      position: center;
-      top: 0px;
-      left: 10px;
-      font-weight: bolder;
-      color: #001323;
-      z-index: 9999;
-      
     }
 
     h2 {
@@ -88,8 +81,8 @@
       z-index: 9000;
       position: absolute;
       /* 
-      Hide the footer be default. This should not contain too much information. Like to a new page for extended content.
-      */
+    Hide the footer be default. This should not contain too much information. Like to a new page for extended content.
+    */
       bottom: -10px;
       /* If too much is included, enable scroll */
       overflow: scroll;
@@ -115,7 +108,7 @@
       top: 0;
       bottom: 0;
       width: 100%;
-      background: rgba(211, 205, 205, 0.6);
+      background: rgba(141, 136, 136, 0.9);
       /* with transparency */
     }
 
@@ -135,7 +128,7 @@
       border: 2px solid rgba(244, 244, 244, 0.2);
       background: rgba(100, 100, 100, 0.9);
       color: rgba(244, 244, 244, 0.8);
-      border-radius: 15px;
+      border-radius: 5px;
     }
 
     .legend h3 {
@@ -179,7 +172,7 @@
       color: #001323;
     }
 
-        /* added color to popup
+    /* added color to popup */
     .custom-popup .leaflet-popup-content-wrapper {
       background: #2c3e50;
       color: #fff;
@@ -201,8 +194,7 @@
       border-left: 15px solid transparent;
       border-right: 15px solid transparent;
       border-top: 15px solid #2c70b4;
-    } */
-   
+    }
   </style>
 </head>
 
@@ -211,7 +203,7 @@
     <h1>KY Auto Accident Trends </h1>
     <h2></h2>
   </header>
-  <div id='map'></div>
+  <div class='custom-popup' id='map'></div>
   <button id="info-button" onclick="myInfo()">Information</button>
   <div id='footer'>
 
@@ -231,6 +223,7 @@
       2010 Census data used, SF1.<br></br>
       <li>Map created by Dave Metzgar</li>
       <li>See my projects on GitHub: <a href="https://github.com/dme256">New Maps Plus</a></li>
+      </li>
       <li>Follow me on twitter: <a href="https://twitter.com/dave_metzgar">@dave_metzgar</a></li>
       <li>Visit my <a href='https://github.com/DME256?tab=projects'>mapping portfolio</a>.</li>
 
@@ -240,10 +233,12 @@
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
   <script src="https://unpkg.com/simple-statistics@6.1.1/dist/simple-statistics.min.js"></script>
-  
+
+
   <script>
     // WRITE YOUR SWEET CODE HERE
-    //I appreciate the tuiton reibursment from my company- Inurance company- they will love this map!
+    //I apprciate the tuitom reibursment frome my company- Inurance company
+
 
     var options = {
       center: [37.8, -85.8],
@@ -251,13 +246,11 @@
       zoomSnap: .1,
       zoomControl: false
     }
-
-    
-
     var map = L.map('map', options);
     var attributeValue = "ACC2007",
       normValue = "ACC2017",
       amtchange = "PERCEN_CHANGE";
+
 
     var countyLayer = $.getJSON("data/accdata.json", function (data) {
 
@@ -272,8 +265,6 @@
         }
       }).addTo(map);
 
-         
-
       // find zoom extent from new layer
       var zoomExtent = dataLayer.getBounds()
 
@@ -286,6 +277,7 @@
 
       dataLayer.addTo(map)
 
+
       drawMap(dataLayer);
 
       // call to new function here gets the data out of the
@@ -296,24 +288,17 @@
           // console.log(layer);
           layer.setStyle({});
 
-          var toolTipInfo = "<h3>" + props["NAME"] + " County</h3>" +
+          layer.bindPopup("<h3>" + props["NAME"] + " County</h3>" +
             " +/- in Accidents " + (props["PERCENT_CHANGE"]).toLocaleString() + "% </b><br>" +
             " 2007 Accidents: " + props[attributeValue].toLocaleString() + "</b><br>" +
             " 2017 Accidents: " + props[normValue].toLocaleString() + "</b><br>" +
-            " Population: " + props["POPULATION"].toLocaleString()
-                        if (L.Browser.mobile) {
-                      // if true use popup
-                      layer.bindPopup(toolTipInfo);
-                    } 
-                    else {
-                      // if false use tooltip
-                      layer.bindTooltip(toolTipInfo, {
-                      sticky: true
-                      });
-                    };
+            " Population: " + props["POPULATION"].toLocaleString());
+
         });
 
         drawLegend(breaks);
+
+
 
         function getClassBreaks() {
 
@@ -323,14 +308,12 @@
           // loop through all the counties
           dataLayer.eachLayer(function (layer) {
             var props = layer.feature.properties
-            if (props[normValue] / props[attributeValue] != null) {
             var value = props[normValue] / props[attributeValue];
             values.push(value);
-            }
           });
           console.log(values);
 
-          var clusters = ss.ckmeans(values, 10);
+          var clusters = ss.ckmeans(values, 7);
 
           // create an array of the lowest value within each cluster
           var breaks = clusters.map(function (cluster) {
@@ -338,7 +321,9 @@
           });
           return breaks;
         }
+
         // var breaks = getClassBreaks(dataLayer);
+
         dataLayer.eachLayer(function (layer) {
           var props = layer.feature.properties
           layer.setStyle({
@@ -346,33 +331,26 @@
           });
 
 
-         });
+        });
 
       };
 
       function getColor(d, breaks) {
 
         if (d <= breaks[0][1]) {
-          return '#7580FF';
+          return '#f1eef6';
         } else if (d <= breaks[1][1]) {
-          return '#8C97FF';
+          return '#bdc9e1';
         } else if (d <= breaks[2][1]) {
-          return '#A8AFFF';
+          return '#74a9cf';
         } else if (d <= breaks[3][1]) {
-          return '#C6CCFF'
+          return '#FFD271'
         } else if (d <= breaks[4][1]) {
-          return '#FCBB53'
+          return '#F65C78'
         } else if (d <= breaks[5][1]) {
-          return '#E89005'
+          return '#F14517'
         } else if (d <= breaks[6][1]) {
-          return '#EC7505'
-        } else if (d <= breaks[7][1]) {
-          return '#FF4F32'
-        } else if (d <= breaks[8][1]) {
-          return '#F11717'  
-        } else if (d <= breaks[9][1]) {
-          return '#F11717'  
-
+          return '#F11717'
         }
       } // end getColor
 
@@ -404,8 +382,8 @@
             // of that class and include a label with the low and a high ends of that class range
             div.innerHTML +=
               '<span style="background:' + color + '"></span> ' +
-              '<label>' + ((breaks[i][0] * 100) - 100).toFixed(1) + ' &mdash; ' +
-              ((breaks[i][1] * 100) - 100).toFixed(1) + '%</label>';
+              '<label>' + ((breaks[i][0] * 100) - 100).toLocaleString() + ' &mdash; ' +
+              ((breaks[i][1] * 100) - 100).toLocaleString() + '</label>';
           }
 
           // return the populated div to be added to the map
@@ -449,17 +427,9 @@
           // Add layer to map!
           stateLayer.addTo(map)
 
-        
-      
-
-       
-
-          });
-      });  
-
+        });
+      });
     });
-
-  
     /* --------------- Toggle on/off info footer content ---------------  */
     var clicked = false // start with false condition
     function myInfo() {
@@ -478,12 +448,6 @@
       clicked = !clicked
 
     }
-  
-    
- 
-
-    
-
   </script>
 
 </body>
