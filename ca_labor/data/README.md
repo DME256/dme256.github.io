@@ -1,0 +1,1 @@
+# For the Assignment (MAP673-Mod2),  I used California Labor json. I examined the class of workers in the civilian workforce by county.

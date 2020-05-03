@@ -83,7 +83,7 @@
 	<div class="container-fluid">
 		<header class="row bg-dark text-white py-3">
 			<div class="col">
-				<h1>Housing Ownership in Kentucky by County</h1>
+				<h1>California Civilian Working Classes</h1>
 			</div>
 		</header>
 
@@ -94,19 +94,15 @@
 			<aside id="about"
 				class="col-md-4 col-lg-3 col-xl-2 order-md-1 text-white py-2 pl-3 bg-secondary overflow-auto">
 				<section>
-					<h3 class="py-2">2010 - Who owns,owes and rents?</h3>
+					<h3 class="py-2">Civilian Class of worker employed population 16 years and over</h3>
 					<p>Data was obtained through American Fact Finder (factfinder.census.gov); 2010 Census, SF1.</p>
-					<p>The U.S. Census Bureau defines “households” as:
-						…all the people who occupy a housing unit. A house, an apartment or other group of rooms, or a
-						single room, is regarded as a housing unit when it is occupied or intended for occupancy as separate
-						living quarters; that is, when the occupants do not live with any other persons in the structure and
-						there is direct access from the outside or through a common hall.
-						A household includes the related family members and all the unrelated people, if any, such as
-						lodgers, foster children, wards, or employees who share the housing unit. A person living alone in a
-						housing unit, or a group of unrelated people sharing a housing unit such as partners or roomers, is
-						also counted as a household. The count of households excludes group quarters. There are two major
-						categories of households, "family" and "nonfamily". 
-					</p>
+					<p>The data breaks down by percentage the class of civilian employed population 16 years and over. The
+						<p>	Four classes are:</p>
+						<p>- Private wage and salary workers</p> 
+						<p> - Government workers</p>
+						<p> - Self-employed in own not incorporated business workers</p>
+						<p> - Unpaid family workers</p> 
+					
 				</section>
 			</aside>
 		</section>
@@ -114,23 +110,24 @@
 		<footer class="row bg-dark text-white py-3">
 			<div class="col">
 				<ul class="list-unstyled">
-					<li>authored by <a href="github.dme256.io">Dave Metzgar</a></li>
+					<li>authored by <a href="https://github.dme256.io">Dave Metzgar</a></li>
 					<li>Date of authored map 04/24/2020</li>
-					<li>data source: <a href="www.factfinder.census.gov">American Fact Finder (factfinder.census.gov)</a></li>
+					<li>data source: <a href="https://www.factfinder.census.gov">American Fact Finder (factfinder.census.gov)</a></li>
 				</ul>
 			</div>
 		</footer>
 	</div>
 
 	<!-- legend is outside of container-fluid and will be dynamically added to map -->
-	<div class="bg-secondary py-2 px-3 ml-3 mt-3 text-white" id="legend"></div> -->
+	<div class="bg-secondary py-2 px-4 ml-3 mt-3 text-white" id="legend"></div> -->
 
 	<!-- ui is outside of container-fluid and will be dynamically added to map -->
 	<div class="form-group mr-3 mt-3" id="dropdown-ui">
 		<select class="form-control bg-primary text-white">
-			<option value="ACC2007" selected>2007 Accidents</option>
-			<option value="ACC2017">2017 Accidents</option>
-			<option value="POPULATION_GR">Population Growth</option>
+			<option value="HC01_VC67" selected>Private wage and salary workers</option>
+			<option value="HC01_VC68">Government workers</option>
+			<option value="HC01_VC69">Self-employed in own not incorporated business workers</option>
+			<option value="HC01_VC70">Unpaid family workers</option>
 		</select>
 	</div> -->
 
@@ -166,21 +163,22 @@
 		// request a basemap tile layer and add to the map
 		//L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
 		//attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-		//}).addTo(map);
+		//).addTo(map);
 
 		// set global variables for map layer,
 		// mapped attribute, and normalizing attribute
-		let attributeValue = "ACC2017";
-		const normValue = "ACC2007";
+		let attributeValue = "HC01_VC67";
+		const normValue = "HC01_VC66";
 
 		// create object to hold legend titles
 		const labels = {
-			"ACC2017": "2017 ACCIDENTS",
-			"ACC2007": "2007 ACCIDENTS",
-			
+			"HC01_VC67": "Private wage and salary workers",
+			"HC01_VC68": "Government workers",
+			"HC01_VC69": "Self-employed in own not incorporated business workers",
+			"HC01_VC70": "Unpaid family workers",
 		}
 
-		$.getJSON("accdata.json", function (data) {
+		$.getJSON("ca_labor.json", function (data) {
 			// jQuery method uses AJAX request for the GeoJSON data
 			console.log(data);
 			drawMap(data)
@@ -256,8 +254,8 @@
 				// assemble string sequence of info for tooltip (end line break with + operator)
 				let tooltipInfo = `<b>${props["NAME"]} County</b></br>
                     ${((props[attributeValue] / props[normValue]) * 100).toLocaleString("en", {   
-                          minimumFractionDigits: 0,
-                          maximumFractionDigits: 2,})}%`
+						minimumSignificantDigits: 2,
+						maximumSignificantDigits: 2,})}%`
 
 				// bind a tooltip to layer with county-specific information
 				layer.bindTooltip(tooltipInfo, {
@@ -350,17 +348,25 @@
 				let color = getColor(breaks[i][0], breaks);
 
 				legend.append(
-					`<span style="background:${color}"></span>
-            <label>${(breaks[i][0] * 100).toLocaleString("en", {   
-                          minimumFractionDigits: 3,
-                          maximumFractionDigits: 3,})} &mdash;
-            ${(breaks[i][1] * 100).toLocaleString("en", {   
-                          minimumFractionDigits: 3,
-                          maximumFractionDigits: 3,})}%</label>`);
-			}
+					`<div><span style="background:${color}"></span>
+                        <label>${(breaks[i][0] * 100).toLocaleString()} &mdash; ${(breaks[i][1] * 100).toLocaleString()}%</label></div>`);
+					}
 		}
 
 		function updateLegend() {
+			var legend = $('#legend').html("<h5>" + labels[attributeValue] + "</h5>");
+            
+            addLegend(legend)
+
+			// loop through the Array of classification break values
+			for (var i = 0; i <= breaks.length - 1; i++) {
+
+				var color = getColor(breaks[i][0], breaks);
+
+				legend.append(
+					`<div><span style="background:${color}"></span>
+                        <label>${(breaks[i][0] * 100).toLocaleString()} &mdash; ${(breaks[i][1] * 100).toLocaleString()}%</label></div>`);
+            }
 
 		}
 
@@ -378,7 +384,7 @@
 			// add the control to the map
 			selectControl.addTo(map);
 			$('#dropdown-ui select').change(function () {
-				attributeValue = this.value;
+			attributeValue = this.value;
 				updateMap(counties);
 			});
 
