@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset=utf-8 />
+  <title>America's Opioid Empidemic</title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+  <link href="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+  <link href='https://fonts.googleapis.com/css?family=Work+Sans:400,500,600' rel='stylesheet' type='text/css'>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css' rel='stylesheet' />
+  <link href='css/styles.css' rel='stylesheet' />
+</head>
+
+<body>
+  <div class='flex-parent viewport-full relative scroll-hidden'>
+    <div class='flex-child w-full w300-ml absolute static-ml left bottom'>
+      <div class='flex-parent flex-parent--column viewport-third h-full-ml hmax-full bg-white py18 px12'>
+        <div class='flex-child flex-child--grow px12 py12 scroll-auto'>
+          <!-- <img class="max-image-width" src="graphics/" title="Kg " height="120" -->
+          <!-- width="180"> -->
+          <h1 class='txt-h1 mb6'>America's Opioid Epidemic</h1>
+          <h3 class='txt-h3'> The Three Waves of Opioid Overdose Deaths</h3>
+
+          The first wave began with increased prescribing of opioids in the mid 2000's, with overdose deaths involving
+          prescription opioid
+          (natural and semi-synthetic opioids and methadone) increasing since at least 1999. As a result of efforts to
+          curtail prescribed opiods (natural) an unintended result was increased use of illegal opioids.
+          The second wave began in 2010, with rapid increases in overdose deaths involving heroin.
+          The third wave began in 2013, with significant increases in overdose deaths involving synthetic opioids,
+          particularly those involving illicitly manufactured fentanyl. The market for illicitly manufactured fentanyl
+          continues to change,
+          and it can be found in combination with heroin, counterfeit pills, and cocaine.<br>
+         
+          The data proves that addiction was transfered, from a corporate/RX system to a system where addicts were forced 
+          to illegal and more lethal alternatives.</b>
+
+          <br>
+          <h3></h3> are classified into 4 categories:</h3>
+
+          <li>Natural- Prescription drugs (e.g. oxycodone, hydrocodone).</li>
+          <li>Synthetic- Psychoactive substances (NPS) that are either known to be opiates or have opiate-like effects.
+            These are not naturally occurring substances(e.g. fentanyl, tramadol).</li>
+          <li>Methadone- Used for pain relief and treatment of drug addiction.</li>
+          <li>Heroin- Illicit drug, opium and morphine is made from the resin of poppy plants.</li>
+
+
+
+          </p>
+          <!-- <img class="max-image-width" src="" title=" xx" height="150" -->
+          <!-- width="280"> -->
+          <h2 class='txt-xl mt18 mb12'>Map Info</h2>
+          <p>The data comes Kaiser Family Foundation(KFF)</p>
+          <a class='link'
+            href="https://www.kff.org/other/state-indicator/opioid-overdose-death-rates/?currentTimeframe=0&selectedDistributions=opioid-overdose-death-rate-age-adjusted&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D">Opiod
+            Death Rates</a> <br>
+          <a class='link'
+            href="https://www.kff.org/other/state-indicator/opioid-overdose-deaths-by-type-of-opioid/?currentTimeframe=0&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D">Death
+            Rate by Type of Opioid</a>
+        </div>
+        <footer class='px12 py12 bg-gray-faint txt-s'>
+          <ul>
+            <li>Explore the raw
+              <a class='link' href='data/opioid_deaths_new.csv'>data</a>
+            </li>
+            <li>Map authored by
+              <a class='link' href="https://github.com/dme256">Dave Metzgar</a>
+            <li>Follow me on Twitter:
+              <a class='link' href="https://twitter.com/dave_metzgar">@dave_metzgar</a>
+            </li>
+          </ul>
+        </footer>
+      </div>
+    </div>
+    <div class='flex-child flex-child--grow viewport-twothirds viewport-full-ml'>
+      <div id="map" class='viewport-twothirds viewport-full-ml'></div>
+
+    </div>
+  </div>
+
+  <!-- year -->
+    <div id='year' class='pt6 px12 bg-white border border--gray-light round'>
+          <p class='txt-bold'>Year: <span>2006</span></p>
+      </div>
+
+  <!-- ui slider -->
+  <div id='slider' class='range w240 bg-white round-ml px12'>
+    <input type='range' min="2006" , max="2018" , value="2006" , step="1" class="currentYear" />
+  </div>
+
+  <!-- legend -->
+  <div id='legend' class='bg-white round px1 py1 relative'>
+    <!--
+      Wrap legend in div that doesn't display when the screen width <= 800px
+      Displays as a block when >= 800px
+     -->
+    <div class='none block-ml'>
+
+      
+      <div class='legend-circles relative w180'>
+        <div class="legend-large border border--gray-light absolute"></div>
+        <div class="legend-small border border--gray-light absolute"></div>
+        <div class="legend-large-label txt-m absolute"></div>
+        <div class="legend-small-label txt-m absolute"></div>
+      </div>
+
+
+      <!-- info -->
+      
+
+      <div id='info' class='py6 px12 bg-white border border-gray-light round fixed w280'>
+        <p>State: <span class='txt-l txt-bold'></span></p>
+        <p class='year'>Death/1000 <span></span> <span class='txt-l txt-bold'></span></p>
+        <p class='natural'><span></span> <span class='txt-l txt-bold'></span></p>
+        <p class='synthetic'><span></span> <span class='txt-l txt-bold'></span></p>
+        <p class='methadone'><span></span> <span class='txt-l txt-bold'></span></p>
+        <p class='heroin'><span></span> <span class='txt-l txt-bold'></span></p>
+
+        <div id='info'></div>
+        
+
+        <!-- Additional elements added here for this step! -->
+        <hr class='txt-hr'>
+        <p class='my12'>Trend: Years 2006 &ndash; 2018</p>
+
+        <p class='mb12 '><span class='yearspark'></span></p>
+        <p><span class='naturalspark'></span></p>
+        <p><span class='syntheticspark'></span></p>
+        <p><span class='methadonespark'></span></p>
+        <p><span class='heroinspark'></span></p>
+      </div>
+
+      <script async defer src="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.js"></script>
+      <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+      <script src='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js'></script>
+      <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min.js"></script>
+      <script src='js/app.js'></script>
+
+</body>
+
+</html>
