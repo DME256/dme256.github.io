@@ -82,7 +82,7 @@
 		}
 
 		L.control.layers(null, sourceLayers, {
-			collapsed: false
+			collapsed: true
 
 		}).addTo(map);
     // pass the correct argument for current year
