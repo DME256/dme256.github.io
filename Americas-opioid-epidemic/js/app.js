@@ -11,7 +11,6 @@
       zoomControl: true
   });
   
-
   const accessToken = 'pk.eyJ1IjoiZG1lMjU2IiwiYSI6ImNrMDh5ajZhaTAzOHEzb293NGl1dGJyMDYifQ.ulN1IYya6BL917CGdf5OIA'
 
   L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + accessToken, {
@@ -20,10 +19,9 @@
     id: 'mapbox.dark',
     accessToken: accessToken
   }).addTo(map);
-
   
 
-  // use omnivore to load the CSV data
+ // use omnivore to load the CSV data
   omnivore.csv('data/opioid_deaths_new.csv')
     .on('ready', function (e) {
       drawMap(e.target.toGeoJSON());
@@ -74,15 +72,16 @@
 
     const sourceLayers = {
       
-		 "<b style='color:#BCA9F5'>Natural Opiods</b>": naturalLayer,
-			"<b style='color:#58FAF4'>Synthetic Opiods</b>": syntheticLayer,
-      "<b style='color:#D96D02'>Methadone</b>": methadoneLayer,
-      "<b style='color:#FF0000'>Heroin</b>": heroinLayer
+		  "<b style='color:#BCA9F5'>Natural Opiods</b>": naturalLayer,
+			"<b style='color:#D96D02'>Methadone</b>": methadoneLayer,
+      "<b style='color:#FF0000'>Heroin</b>": heroinLayer,
+      "<b style='color:#58FAF4'>Synthetic Opiods</b>": syntheticLayer
 
 		}
 
 		L.control.layers(null, sourceLayers, {
-			collapsed: true
+      collapsed: false,
+      color: '#FF0000'
 
 		}).addTo(map);
     // pass the correct argument for current year
@@ -200,8 +199,7 @@
       return legend;
 
     }
-
-    
+  
     legendControl.addTo(map);
 
   } // end drawLegend()
@@ -212,6 +210,23 @@
     // and hide it from view initially
     const info = $('#info').hide();
 
+        // Test if mobile
+        if (L.Browser.mobile) {
+
+          syntheticLayer.eachLayer(function(layer) {
+            console.log(currentYear,layer.feature.properties)
+            const props = layer.feature.properties;
+            let popup = `<h1>${props.STATE}</h1>
+            ${props['YEAR' + currentYear]}<br>
+              NATURAL: ${props['NATURAL' + currentYear]}<br>
+              SYNTHETIC: ${props['SYNTHETIC' + currentYear]}<br>
+              METHADONE: ${props['METHADONE' + currentYear]}<br>
+              HEROIN: ${props['HEROIN' + currentYear]}<br>
+            `
+            layer.bindPopup(popup)
+          })
+          } else {
+
     // since naturalLayer is on top, use to detect mouseover events
     syntheticLayer.on('mouseover', function (e) {
 
@@ -220,6 +235,7 @@
 
       // access properties of target layer
       const props = e.layer.feature.properties;
+      activeLayer =e.Layer
 
       // // // populate HTML elements with relevant info
       $('#info span').html(props.STATE);
@@ -235,11 +251,7 @@
       $(".methadone span:last-child").html(Number(props['METHADONE' + currentYear]).toLocaleString());
       $(".heroin span:last-child").html(Number(props['HEROIN' + currentYear]).toLocaleString());
      
-      
-      
-      
-      
-      // raise opacity level as visual affordance
+     // raise opacity level as visual affordance
       e.layer.setStyle({
         fillOpacity: .6
       });
@@ -250,8 +262,6 @@
       methadoneValues = [],
       heroinValues = [];
            
-       
-
       // loop through the year levels and push values into those arrays
       for (let i = 2006; i <= 2018; i++) {
         naturalValues.push(props['NATURAL' + i]);
@@ -260,7 +270,6 @@
         heroinValues.push(props['HEROIN' + i]);
                
       }
-
       
       $('.naturalspark').sparkline(naturalValues, {
         width: '200px',
@@ -350,6 +359,7 @@
         }
       }
     });
+  }
 
   } // end retrieveInfo()
 
